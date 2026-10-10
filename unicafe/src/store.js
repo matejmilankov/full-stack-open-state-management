@@ -12,6 +12,9 @@ const useCounterStore = create(set => ({
     }
 }));
 
+// Ovo je pravilna upotreba useShallow hooka
+// zato sto samo vracam objekat postojecih polja
+// umesto da pisem 3 selektora
 export const useValues = () => useCounterStore(
     useShallow(state => ({
         good: state.good,
