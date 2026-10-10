@@ -23,9 +23,12 @@ const useAnecdoteStore = create((set) => ({
         anecdotes: updated.toSorted((a, b) => b.votes - a.votes)
       }
     }),
-    add: (content) => set(state => ({
-      anecdotes: [...state.anecdotes, asObject(content)]
-    })),
+    add: async (content) => {
+      const newAnecdot = await ancedotService.create(content);
+      set(state => ({
+        anecdotes: [...state.anecdotes, newAnecdot]
+      }))
+    },
     setFilter: value => set(() => ({ filter: value })),
     initialize: async () => {
       const anecdotes = await ancedotService.getAll();
