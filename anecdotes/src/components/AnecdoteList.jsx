@@ -4,7 +4,7 @@ import { useNotificationActions } from "../notificationStore";
 
 export function AnecdoteList() {
     const anecdotes = useAnecdotes();
-    const { vote } = useActions();
+    const { vote, remove } = useActions();
 
     const { notify } = useNotificationActions();
 
@@ -21,6 +21,9 @@ export function AnecdoteList() {
                     <div>
                         has {anecdote.votes}
                         <button onClick={() => handleVote(anecdote.id, anecdote.content)}>vote</button>
+                        {anecdote.votes === 0 && (
+                            <button onClick={() => remove(anecdote.id)}>remove</button>
+                        )}
                     </div>
                 </div>
             ))}
