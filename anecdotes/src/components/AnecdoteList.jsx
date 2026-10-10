@@ -10,7 +10,7 @@ export function AnecdoteList() {
 
     const handleVote = (id, content) => {
         vote(id);
-        notify(`You voted ${content}`, 5);
+        notify(`you voted '${content}'`, 5);
     }
 
     return (
@@ -22,7 +22,7 @@ export function AnecdoteList() {
                         has {anecdote.votes}
                         <button onClick={() => handleVote(anecdote.id, anecdote.content)}>vote</button>
                         {anecdote.votes === 0 && (
-                            <button onClick={() => remove(anecdote.id)}>remove</button>
+                            <button onClick={() => remove(anecdote.id)}>delete</button>
                         )}
                     </div>
                 </div>
