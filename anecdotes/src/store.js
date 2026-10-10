@@ -1,28 +1,25 @@
-
 import { create } from 'zustand';
 import ancedotService from './services/anecdotes';
 
-const getId = () => (100000 * Math.random()).toFixed(0)
-
-const asObject = anecdote => ({
-  content: anecdote,
-  id: getId(),
-  votes: 0
-})
-
-const useAnecdoteStore = create((set) => ({
+const useAnecdoteStore = create((set, get) => ({
   anecdotes: [],
   filter: '',
   actions: {
-    vote: (id) => set(state => {
-      const updated = state.anecdotes.map(a => 
-        a.id === id ? { ...a, votes: a.votes + 1 } : a
+    vote: async (id) => {
+      const anecdoteToUpdate = get().anecdotes.find(a => a.id === id);
+      const updatedAnecdote = await ancedotService.update(
+        id,
+        { ...anecdoteToUpdate, votes: anecdoteToUpdate.votes + 1 }
       );
 
-      return {
-        anecdotes: updated.toSorted((a, b) => b.votes - a.votes)
-      }
-    }),
+      const updatedAncedotes = get().anecdotes.map(a => (
+        a.id === id ? updatedAnecdote : a
+      ));
+
+      set(() => ({
+        anecdotes: updatedAncedotes.toSorted((a, b) => b.votes - a.votes)
+      }))
+    },
     add: async (content) => {
       const newAnecdot = await ancedotService.create(content);
       set(state => ({
@@ -41,10 +38,10 @@ export const useAnecdotes = () => {
   const anecdotes = useAnecdoteStore(state => state.anecdotes);
   const filter = useAnecdoteStore(state => state.filter);
 
-  if(filter !== '')
+  if (filter !== '')
     return anecdotes.filter(a => (
       a.content.toLowerCase().includes(filter.toLowerCase())
-  ));
+    ));
 
   return anecdotes;
 }

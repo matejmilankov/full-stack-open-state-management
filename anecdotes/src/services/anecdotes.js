@@ -3,7 +3,7 @@ const baseUrl = 'http://localhost:3001/anecdotes';
 const getAll = async () => {
     const response = await fetch(baseUrl);
 
-    if(!response.ok)
+    if (!response.ok)
         throw Error('Error while getting anecdotes');
 
     return await response.json();
@@ -12,15 +12,29 @@ const getAll = async () => {
 const create = async (content) => {
     const options = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content, votes: 0 })
     }
     const response = await fetch(baseUrl, options);
 
-    if(!response.ok)
+    if (!response.ok)
         throw Error('Failed to create new anecdote');
 
     return await response.json();
 }
 
-export default { getAll, create }
+const update = async (id, anecdot) => {
+    const options = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(anecdot)
+    }
+    const response = await fetch(`${baseUrl}/${id}`, options);
+
+    if(!response.ok)
+        throw Error('Failed to update note');
+
+    return await response.json();
+}
+
+export default { getAll, create, update }
