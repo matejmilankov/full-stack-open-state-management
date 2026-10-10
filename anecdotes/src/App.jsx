@@ -3,6 +3,7 @@ import { AnecdoteForm } from "./components/AnecdoteForm";
 import { AnecdoteList } from "./components/AnecdoteList";
 import { useActions } from "./store";
 import Filter from "./components/Filter";
+import Notification from "./components/Notification";
 
 const App = () => {
   const { initialize } = useActions();
@@ -12,8 +13,9 @@ const App = () => {
 
   return (
     <div>
-      <Filter />
       <h2>Anecdotes</h2>
+      <Notification />
+      <Filter />
       <AnecdoteList />
       <AnecdoteForm />
     </div>

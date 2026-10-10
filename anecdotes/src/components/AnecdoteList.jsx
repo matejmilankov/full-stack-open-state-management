@@ -1,9 +1,17 @@
 import { useAnecdotes } from "../store";
 import { useActions } from "../store";
+import { useNotificationActions } from "../notificationStore";
 
 export function AnecdoteList() {
     const anecdotes = useAnecdotes();
     const { vote } = useActions();
+
+    const { notify } = useNotificationActions();
+
+    const handleVote = (id, content) => {
+        vote(id);
+        notify(`You voted ${content}`, 5);
+    }
 
     return (
         <>
@@ -12,7 +20,7 @@ export function AnecdoteList() {
                     <div>{anecdote.content}</div>
                     <div>
                         has {anecdote.votes}
-                        <button onClick={() => vote(anecdote.id)}>vote</button>
+                        <button onClick={() => handleVote(anecdote.id, anecdote.content)}>vote</button>
                     </div>
                 </div>
             ))}
